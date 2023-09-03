@@ -5,7 +5,7 @@
 ### Loading The Library:
 
 ```lua
-local EasyPath = loadstring(game:HttpGet(""))()
+local EasyPath = loadstring(game:HttpGet("https://raw.githubusercontent.com/RScriptz/PathfindingLibrary/main/Source.lua"))()
 ```
 
 ### Walk To Path:
