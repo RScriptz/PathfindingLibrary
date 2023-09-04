@@ -10,7 +10,7 @@ local EasyPath = loadstring(game:HttpGet("https://raw.githubusercontent.com/RScr
 
 ## Walk To Path:
 
-### Arguments
+### Arguments:
 ```
 EasyPath:WalkToPath({
 		Destination = Part/CFrame/Vector3,
@@ -24,7 +24,7 @@ EasyPath:WalkToPath({
 		DeletePathWhenDone = true/false
 	})
 ```
-### Examples
+### Examples:
 ```lua
 --> Normal WalkToPath
 EasyPath:WalkToPath({
@@ -45,7 +45,7 @@ EasyPath:WalkToPath({
 
 ## Simple Walk To Path:
 
-### Arguments
+### Arguments:
 ```
 	EasyPath:WalkToBasicPath({
 		Destination = Part/CFrame/Vector3,
@@ -54,7 +54,7 @@ EasyPath:WalkToPath({
 		StrongAnticheat = true/false
 	})
 ```
-### Examples
+### Examples:
 ```lua
 	--> Simple WalkToPath
 	EasyPath:WalkToBasicPath({
@@ -67,11 +67,11 @@ EasyPath:WalkToPath({
 
 ## Player Walk To (Same As Roblox's :MoveTo()):
 
-### Arguments
+### Arguments:
 ```
 EasyPath:PlayerWalkTo(Part/CFrame/Vector3, (Offset) Vector3)
 ```
-### Examples
+### Examples:
 ```lua
 	--> PlayerWalkTo Example
 	EasyPath:PlayerWalkTo(game:GetService("Workspace").Part, Vector3.new(0,0,0)) -- Same As Humanoid:WalkTo(), Except It Has A Few Extra Checks To Ensure The Function Never Errors, Note, Since This Only Walks To The Shortest Path, And It Doesnt Jump Nor Avoid Obstacles, This Can Easly Get Stuck. Note: It Also Supports Vector3.new() and CFrame.new()
@@ -79,6 +79,7 @@ EasyPath:PlayerWalkTo(Part/CFrame/Vector3, (Offset) Vector3)
 
 ## Player Walk To / Walk To Path Finished Check:
 
+### Examples:
 ```lua
 	--> WalkToPath Finished Check 1
 	repeat wait() until EasyPath:FinishedPathfinding() == true -- Waits Until The Pathfinding Has Finished
@@ -126,11 +127,11 @@ EasyPath:PlayerWalkTo(Part/CFrame/Vector3, (Offset) Vector3)
 
 ## Can Pathfind To Check:
 
-### Arguments
+### Arguments:
 ```
 EasyPath:CanPathfindTo(Part/CFrame/Vector3, (Offset) Vector3)
 ```
-### Examples
+### Examples:
 ```lua
 	--> CanPathfindTo Use Case 1
 	for i,v in pairs(game:GetService("Workspace"):GetChildren()) do
@@ -172,7 +173,7 @@ EasyPath:CanPathfindTo(Part/CFrame/Vector3, (Offset) Vector3)
 
 ## Delete Visual Waypoints Manually:
 
-### Examples
+### Examples:
 ```lua
 	EasyPath:DeleteAllWaypoints() -- Deletes All Visual Waypoints Manually.
 ```
