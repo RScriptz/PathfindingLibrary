@@ -41,7 +41,7 @@ function EasyPath:WalkToPath(CustomPath)
 	elseif typeof(CustomPath.Destination) == "Vector3" then
 		WalkToPathfinding:ComputeAsync(game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position, CustomPath.Destination + CustomPath.PathOffset)
 	else
-		WalkToPathfinding:ComputeAsync(game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position, CustomPath.Destination.Position)
+		WalkToPathfinding:ComputeAsync(game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position, CustomPath.Destination.Position + CustomPath.PathOffset)
 	end
 	if WalkToPathfinding.Status == Enum.PathStatus.Success then
 		if CustomPath.DebugMode == true then
@@ -113,7 +113,7 @@ function EasyPath:WalkToBasicPath(CustomPath)
 	elseif typeof(CustomPath.Destination) == "Vector3" then
 		WalkToPathfinding:ComputeAsync(game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position, CustomPath.Destination + CustomPath.PathOffset)
 	else
-		WalkToPathfinding:ComputeAsync(game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position, CustomPath.Destination.Position)
+		WalkToPathfinding:ComputeAsync(game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position, CustomPath.Destination.Position + CustomPath.PathOffset)
 	end
 	if WalkToPathfinding.Status == Enum.PathStatus.Success then
 		if CustomPath.DebugMode == true then
