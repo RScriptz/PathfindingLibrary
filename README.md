@@ -1,14 +1,14 @@
 # Documentation
 
-## EasyPath Is Made For Beginners Who Want To Make Legit Cheats But Dont Know The Basics Of Pathfinding, It Is By No Means Good.
+### EasyPath Is Made For Beginners Who Want To Make Legit Cheats But Dont Know The Basics Of Pathfinding, It Is By No Means Good.
 
-### Loading The Library:
+## Loading The Library:
 
 ```lua
 local EasyPath = loadstring(game:HttpGet("https://raw.githubusercontent.com/RScriptz/PathfindingLibrary/main/Source.lua"))()
 ```
 
-### Walk To Path:
+## Walk To Path:
 
 ### Arguments
 ```
@@ -43,7 +43,7 @@ EasyPath:WalkToPath({
 	})
 ```
 
-### Simple Walk To Path:
+## Simple Walk To Path:
 
 ### Arguments
 ```
@@ -65,7 +65,7 @@ EasyPath:WalkToPath({
 	})
 ```
 
-### Player Walk To (Same As Roblox's :MoveTo()):
+## Player Walk To (Same As Roblox's :MoveTo()):
 
 ### Arguments
 ```
@@ -124,7 +124,7 @@ EasyPath:PlayerWalkTo(Part/CFrame/Vector3, (Offset) Vector3)
 	end
 ```
 
-### Can Pathfind To Check:
+## Can Pathfind To Check:
 
 ### Arguments
 ```
@@ -170,7 +170,7 @@ EasyPath:CanPathfindTo(Part/CFrame/Vector3, (Offset) Vector3)
 	end
 ```
 
-### Delete Visual Waypoints Manually:
+## Delete Visual Waypoints Manually:
 
 ### Examples
 ```lua
