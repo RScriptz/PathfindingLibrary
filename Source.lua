@@ -13,6 +13,16 @@ function EasyPath:CreateVisualWaypoint(WaypointPosition, WaypointSize, WaypointC
 	neonBall.Name = "EasyPath_PathPoint"
 end
 
+function EasyPath:CFrameToPart(CFrame)
+	local CFramePart = Instance.new("Part")
+	CFramePart.Parent = game:GetService("Workspace")
+	CFramePart.Name = "EasyPath_CFrameReference"
+	CFramePart.CanCollide = false
+	CFramePart.CanTouch = false
+	CFramePart.Transparency = 1
+	CFramePart.CFrame = CFrame
+end
+
 function EasyPath:DeleteAllWaypoints()
 	for i, v in pairs(game:GetService("Workspace"):GetChildren()) do
 		if v.Name == "EasyPath_PathPoint" then
@@ -24,7 +34,15 @@ end
 function EasyPath:WalkToPath(CustomPath)
 	local PlayerWalkspeed = tonumber(game:GetService("Players").LocalPlayer.Character.Humanoid.WalkSpeed)
 	local WalkToPathfinding = game:GetService("PathfindingService"):CreatePath()
-	WalkToPathfinding:ComputeAsync(game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position, CustomPath.Destination.Position + CustomPath.PathOffset)
+
+	if typeof(CustomPath.Destination) == "CFrame" then
+		EasyPath:CFrameToPart(CustomPath.Destination)
+		WalkToPathfinding:ComputeAsync(game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position, game:GetService("Workspace").EasyPath_CFrameReference.Position + CustomPath.PathOffset)
+	elseif typeof(CustomPath.Destination) == "Vector3" then
+		WalkToPathfinding:ComputeAsync(game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position, CustomPath.Destination + CustomPath.PathOffset)
+	else
+		WalkToPathfinding:ComputeAsync(game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position, CustomPath.Destination.Position)
+	end
 	if WalkToPathfinding.Status == Enum.PathStatus.Success then
 		if CustomPath.DebugMode == true then
 			print("Status: Starting...")
@@ -80,12 +98,23 @@ function EasyPath:WalkToPath(CustomPath)
 	if CustomPath.DeletePathWhenDone == true then
 		EasyPath:DeleteAllWaypoints()
 	end
+	if game:GetService("Workspace"):FindFirstChild("EasyPath_CFrameReference") then
+		game:GetService("Workspace").EasyPath_CFrameReference:Remove()
+	end
 end
 
 function EasyPath:WalkToBasicPath(CustomPath)
 	local PlayerWalkspeed = tonumber(game:GetService("Players").LocalPlayer.Character.Humanoid.WalkSpeed)
 	local WalkToPathfinding = game:GetService("PathfindingService"):CreatePath()
-	WalkToPathfinding:ComputeAsync(game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position, CustomPath.Destination.Position)
+
+	if typeof(CustomPath.Destination) == "CFrame" then
+		EasyPath:CFrameToPart(CustomPath.Destination)
+		WalkToPathfinding:ComputeAsync(game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position, game:GetService("Workspace").EasyPath_CFrameReference.Position + CustomPath.PathOffset)
+	elseif typeof(CustomPath.Destination) == "Vector3" then
+		WalkToPathfinding:ComputeAsync(game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position, CustomPath.Destination + CustomPath.PathOffset)
+	else
+		WalkToPathfinding:ComputeAsync(game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position, CustomPath.Destination.Position)
+	end
 	if WalkToPathfinding.Status == Enum.PathStatus.Success then
 		if CustomPath.DebugMode == true then
 			print("Status: Starting...")
@@ -135,6 +164,9 @@ function EasyPath:WalkToBasicPath(CustomPath)
 	if not CustomPath.StrongAnticheat == true then
 		game:GetService("Players").LocalPlayer.Character.Humanoid.WalkSpeed = PlayerWalkspeed
 	end
+	if game:GetService("Workspace"):FindFirstChild("EasyPath_CFrameReference") then
+		game:GetService("Workspace").EasyPath_CFrameReference:Remove()
+	end
 end
 
 function EasyPath:FinishedPathfinding()
@@ -144,15 +176,28 @@ function EasyPath:FinishedPathfinding()
 	return true
 end
 
-function EasyPath:PlayerWalkTo(Destination)
+function EasyPath:PlayerWalkTo(Destination, Offset)
 	repeat 
 		wait()
 	until game:GetService("Players").LocalPlayer.Character and game:GetService("Players").LocalPlayer.Character:FindFirstChild("Humanoid")
-	game:GetService("Players").LocalPlayer.Character.Humanoid:MoveTo(Destination.Position)
+	if typeof(Destination) == "CFrame" then
+		EasyPath:CFrameToPart(Destination)
+		game:GetService("Players").LocalPlayer.Character.Humanoid:MoveTo(game:GetService("Workspace").EasyPath_CFrameReference.Position + Offset)
+	elseif typeof(Destination) == "Vector3" then
+		game:GetService("Players").LocalPlayer.Character.Humanoid:MoveTo(Destination + Offset)
+	else
+		game:GetService("Players").LocalPlayer.Character.Humanoid:MoveTo(Destination.Position + Offset)
+	end
+	game:GetService("Players").LocalPlayer.Character.Humanoid.MoveToFinished:Wait()
+	if game:GetService("Workspace"):FindFirstChild("EasyPath_CFrameReference") then
+		game:GetService("Workspace").EasyPath_CFrameReference:Remove()
+	end
 end
 
-function EasyPath:CanPathfindTo(Destination)
+function EasyPath:CanPathfindTo(Destination, Offset)
 	local Result
+	local WalkToPathfinding = game:GetService("PathfindingService"):CreatePath()
+
 	pcall(function()
 		if not game:GetService("Players").LocalPlayer.Character and game:GetService("Players").LocalPlayer.Character.Humanoid then
 			print("(error) Humanoid Not Found, Waiting For Humanoid.")
@@ -160,21 +205,46 @@ function EasyPath:CanPathfindTo(Destination)
 				wait()
 			until game:GetService("Players").LocalPlayer.Character and game:GetService("Players").LocalPlayer.Character:FindFirstChild("Humanoid")
 		end
-		if Destination == nil or Destination == "nil" or Destination.Parent == nil then
-			print("(false) Part Does Not Exist")
-			Result = false
-		else
-			local WalkToPathfinding = game:GetService("PathfindingService"):CreatePath()
-			WalkToPathfinding:ComputeAsync(game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position, Destination.Position)
+
+
+		if typeof(Destination) == "CFrame" then
+			EasyPath:CFrameToPart(Destination)
+			WalkToPathfinding:ComputeAsync(game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position, game:GetService("Workspace").EasyPath_CFrameReference.Position + Offset)
 			if WalkToPathfinding.Status == Enum.PathStatus.Success then
-				print("(true) Can Reach Part")
+				print("(true) Can Reach CFrame")
 				Result = true
 			else
-				print("(false) Impossible To Reach Part")
+				print("(false) Impossible To Reach CFrame")
 				Result = false
+			end
+		elseif typeof(Destination) == "Vector3" then
+			WalkToPathfinding:ComputeAsync(game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position, Destination + Offset)
+			if WalkToPathfinding.Status == Enum.PathStatus.Success then
+				print("(true) Can Reach Vector3")
+				Result = true
+			else
+				print("(false) Impossible To Reach Vector3")
+				Result = false
+			end
+		else
+			if Destination == nil or Destination == "nil" or Destination.Parent == nil then
+				print("(false) Part Does Not Exist")
+				Result = false
+			else
+				WalkToPathfinding:ComputeAsync(game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position, Destination.Position + Offset)
+				if WalkToPathfinding.Status == Enum.PathStatus.Success then
+					print("(true) Can Reach Part")
+					Result = true
+				else
+					print("(false) Impossible To Reach Part")
+					Result = false
+				end
 			end
 		end
 	end)
+	if game:GetService("Workspace"):FindFirstChild("EasyPath_CFrameReference") then
+		game:GetService("Workspace").EasyPath_CFrameReference:Remove()
+	end
 	return Result
 end
 
