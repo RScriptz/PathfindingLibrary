@@ -10,6 +10,21 @@ local EasyPath = loadstring(game:HttpGet("https://raw.githubusercontent.com/RScr
 
 ### Walk To Path:
 
+### Arguments
+```
+EasyPath:WalkToPath({
+		Destination = Part/CFrame/Vector3,
+		PathOffset = Vector3,
+		DebugMode = true/false,
+		StrongAnticheat = true/false,
+		VisualPath = true/false,
+		VisualPathSize = Vector3,
+		VisualPathColor = Color3.fromRGB,
+		VisualPathOffset = Vector3,
+		DeletePathWhenDone = true/false
+	})
+```
+### Examples
 ```lua
 --> Normal WalkToPath
 EasyPath:WalkToPath({
@@ -30,10 +45,21 @@ EasyPath:WalkToPath({
 
 ### Simple Walk To Path:
 
+### Arguments
+```
+	EasyPath:WalkToBasicPath({
+		Destination = Part/CFrame/Vector3,
+                PathOffset = Vector3,
+		DebugMode = true/false,
+		StrongAnticheat = true/false
+	})
+```
+### Examples
 ```lua
 	--> Simple WalkToPath
 	EasyPath:WalkToBasicPath({
 		Destination = game:GetService("Workspace").Part, -- The Part The Character Should Pathfind To. Note: It Also Supports Vector3.new() and CFrame.new()
+                PathOffset = Vector3.new(0,0,0), -- Makes The Humanoid To Walk To The Part + Theese Studs, Giving It A Slight Offset, Keep It As It Is For No Offset (Walks Right To The Part). NOTE: Changing The Height Vector To Over 2-5 Will Make The Target Impossible To Reach, Therefore The Script Wont Work.
 		DebugMode = true, -- Prints What The Script Is Doing At That Point In The Developer Console.
 		StrongAnticheat = false -- Whenever The Pathfinding Action Is Jumping, The Script Makes The Player's Walkspeed 0, So The Humanoid Instantly Stops, Then Changes It To 16, Well, Some Games May Detect That, So Enabling This Will Make The Script Skip That Action.
 	})
@@ -41,9 +67,14 @@ EasyPath:WalkToPath({
 
 ### Player Walk To (Same As Roblox's :MoveTo()):
 
+### Arguments
+```
+EasyPath:PlayerWalkTo(Part/CFrame/Vector3, (Offset) Vector3)
+```
+### Examples
 ```lua
 	--> PlayerWalkTo Example
-	EasyPath:PlayerWalkTo(game:GetService("Workspace").Part) -- Same As Humanoid:WalkTo(), Except It Has A Few Extra Checks To Ensure The Function Never Errors, Note, Since This Only Walks To The Shortest Path, And It Doesnt Jump Nor Avoid Obstacles, This Can Easly Get Stuck. Note: It Also Supports Vector3.new() and CFrame.new()
+	EasyPath:PlayerWalkTo(game:GetService("Workspace").Part, Vector3.new(0,0,0)) -- Same As Humanoid:WalkTo(), Except It Has A Few Extra Checks To Ensure The Function Never Errors, Note, Since This Only Walks To The Shortest Path, And It Doesnt Jump Nor Avoid Obstacles, This Can Easly Get Stuck. Note: It Also Supports Vector3.new() and CFrame.new()
 ```
 
 ### Player Walk To / Walk To Path Finished Check:
@@ -97,7 +128,7 @@ EasyPath:WalkToPath({
 
 ### Arguments
 ```
-EasyPath:CanPathfindTo(Part/CFrame/Vector3, Offset)
+EasyPath:CanPathfindTo(Part/CFrame/Vector3, (Offset) Vector3)
 ```
 ### Examples
 ```lua
@@ -141,6 +172,7 @@ EasyPath:CanPathfindTo(Part/CFrame/Vector3, Offset)
 
 ### Delete Visual Waypoints Manually:
 
+### Examples
 ```lua
 	EasyPath:DeleteAllWaypoints() -- Deletes All Visual Waypoints Manually.
 ```
