@@ -77,7 +77,7 @@ EasyPath:PlayerWalkTo(Part/CFrame/Vector3, (Offset) Vector3)
 	EasyPath:PlayerWalkTo(game:GetService("Workspace").Part, Vector3.new(0,0,0)) -- Same As Humanoid:WalkTo(), Except It Has A Few Extra Checks To Ensure The Function Never Errors, Note, Since This Only Walks To The Shortest Path, And It Doesnt Jump Nor Avoid Obstacles, This Can Easly Get Stuck. Note: It Also Supports Vector3.new() and CFrame.new()
 ```
 
-### Player Walk To / Walk To Path Finished Check:
+## Player Walk To / Walk To Path Finished Check:
 
 ```lua
 	--> WalkToPath Finished Check 1
